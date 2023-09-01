@@ -1,0 +1,9 @@
+# IntelliJ IDEA specific files
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Project files
+target/
+.bsp/
