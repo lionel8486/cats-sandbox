@@ -1,7 +1,16 @@
 package chapter1
 
-import JsonWriterInstances._
-
+import JsonSyntax._
 object EndUser extends App {
-  println(Json.toJson(Person("Dave", "dave@example.com")))
+  val dave = Person("Dave", "dave@example.com")
+
+  println(Json.toJson(dave))
+
+  println(dave.toJson)
+
+  val jsonWriterStr = implicitly[JsonWriter[String]]
+  println(jsonWriterStr)
+
+  println(Json.toJson(Option("A String")))
+  //println(Json.toJson())
 }

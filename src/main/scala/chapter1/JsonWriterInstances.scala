@@ -1,6 +1,7 @@
 package chapter1
 
 
+// old solution, no longer needed after moving instances to the companion object of the type class
 object JsonWriterInstances {
   implicit val stringWriter: JsonWriter[String] =
     new JsonWriter[String] {
@@ -9,11 +10,8 @@ object JsonWriterInstances {
     }
 
   implicit val personWriter: JsonWriter[Person] =
-    new JsonWriter[Person] {
-      override def write(value: Person): Json =
-        JsObject(Map(
-          "name" -> JsString(value.name),
-          "email" -> JsString(value.email)
-        ))
-    }
+    (value: Person) => JsObject(Map(
+      "name" -> JsString(value.name),
+      "email" -> JsString(value.email)
+    ))
 }
