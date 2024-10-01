@@ -1,39 +1,47 @@
 package chapter1.exercise
 
+import java.util.Date
+
+
 trait Printable[A] {
   def format(value: A): String
-
 }
 
 object Printable {
-  implicit val stringFormatter: Printable[String] =
-    new Printable[String] {
-      override def format(value: String): String = value
-    }
-
-  implicit val intFormatter: Printable[Int] =
-    (value: Int) => value.toString
-
-  implicit val catFormatter: Printable[Cat] =
-    (value: Cat) => s"${Printable.format(value.name)} is a ${Printable.format(value.age)} year-old ${Printable.format(value.color)} cat."
-  implicit def format[A](value: A)(implicit printable: Printable[A]): String = {
-    printable.format(value)
+  def format[A](value: A)(implicit p: Printable[A]): String = {
+    p.format(value)
   }
 
-  implicit def print[A](value: A)(implicit printable: Printable[A]): Unit = {
+  def print[A](value: A)(implicit p: Printable[A]): Unit = {
     println(format(value))
   }
+}
 
+object PrintableInstances {
+  implicit val formatString: Printable[String] = new Printable[String] {
+    override def format(value: String): String = value
+  }
+
+  implicit val formatInt: Printable[Int] = new Printable[Int] {
+    override def format(value: Int): String = value.toString
+  }
+
+  import chapter1.exercise.Cat
+  implicit val formatCat: Printable[Cat] = (cat: Cat) => {
+    val name = Printable.format(cat.name)
+    val age = Printable.format(cat.age)
+    val color = Printable.format(cat.color)
+
+    s"$name is a $age year-old $color cat."
+  }
+
+  implicit val formatDate: Printable[Date] = (date: Date) => s"${date.toString}"
 }
 
 object PrintableSyntax {
   implicit class PrintableOps[A](value: A) {
-    def format(implicit p: Printable[A]): String = {
-      p.format(value)
-    }
+    def format(implicit printable: Printable[A]): String = printable.format(value)
 
-    def print(implicit p: Printable[A]): Unit = {
-      println(value.format)
-    }
+    def print(implicit printable: Printable[A]): Unit = println(format(printable))
   }
 }

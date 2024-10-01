@@ -1,20 +1,28 @@
 package chapter1.exercise
 
-import PrintableSyntax._
+import java.util.Date
+
 object PrintableClient extends App {
-  val s = "This is a String."
-
-  Printable.print(s)
-
-  val i = 35
-
-  Printable.print(i)
 
 
-  val cat = Cat("Tom", 3, "blue")
+  val name = "Gary"
+  val age = 8
+  val color = "Yellow"
+  val cat = Cat(name, age, color)
+
+  println(PrintableInstances.formatString.format(name))
+  println(PrintableInstances.formatInt.format(age))
+  println(PrintableInstances.formatCat.format(cat))
+
+  import chapter1.exercise.PrintableInstances._
+  Printable.print(name)
+  Printable.print(age)
+  Printable.print(color)
   Printable.print(cat)
 
-  s.print
-  i.print
+
+  import chapter1.exercise.PrintableSyntax._
   cat.print
+
+  new Date().print
 }
