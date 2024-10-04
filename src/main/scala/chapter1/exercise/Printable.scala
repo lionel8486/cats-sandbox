@@ -26,7 +26,6 @@ object PrintableInstances {
     override def format(value: Int): String = value.toString
   }
 
-  import chapter1.exercise.Cat
   implicit val formatCat: Printable[Cat] = (cat: Cat) => {
     val name = Printable.format(cat.name)
     val age = Printable.format(cat.age)
@@ -36,6 +35,13 @@ object PrintableInstances {
   }
 
   implicit val formatDate: Printable[Date] = (date: Date) => s"${date.toString}"
+
+  implicit def formatOption[A](implicit printable:Printable[A]): Printable[Option[A]] = new Printable[Option[A]] {
+    override def format(option: Option[A]): String = option match {
+      case Some(value) => s"Some(${printable.format(value)})"
+      case None => "None"
+    }
+  }
 }
 
 object PrintableSyntax {
