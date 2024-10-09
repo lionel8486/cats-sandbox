@@ -28,11 +28,5 @@ object FunctorClient extends App {
   doMath(Option(20)).print
 
   def doMath[F[_]](start: F[Int]) (implicit functor: Functor[F]):F[Int] = start.map(_ + 1 * 2)
-
-
-  final case class Box[A](value: A)
-
-  val box = Box[Int](123)
-  box.map(value => value + 1)
 }
 
