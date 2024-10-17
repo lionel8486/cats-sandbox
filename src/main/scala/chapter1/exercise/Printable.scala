@@ -42,6 +42,10 @@ object PrintableInstances {
       case None => "None"
     }
   }
+
+  implicit def formatList[A](implicit printable: Printable[A]): Printable[List[A]] = new Printable[List[A]] {
+    override def format(list: List[A]): String = list.map(printable.format).mkString("[", ", ", "]")
+  }
 }
 
 object PrintableSyntax {
